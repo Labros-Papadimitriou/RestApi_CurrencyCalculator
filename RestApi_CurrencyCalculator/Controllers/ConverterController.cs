@@ -18,6 +18,11 @@ namespace RestApi_CurrencyCalculator.Controllers
             _unitOfWork = unitOfWork;
         }
 
-
+        [HttpGet]
+        public IActionResult GetExchange(
+            string baseCurrency, string targetCurrency, int value)
+        {
+            return null;
+        }
     }
 }
