@@ -13,8 +13,8 @@ namespace RestApi_CurrencyCalculator.Persistence.Repositories
             : base(context)
         {
         }
+        public ApplicationDbContext ApplicationDbContext => Context as ApplicationDbContext;
 
-        public ApplicationDbContext MySchoolContext => Context as ApplicationDbContext;
 
     }
 }

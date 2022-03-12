@@ -22,7 +22,13 @@ namespace RestApi_CurrencyCalculator.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Currency>> GetAllCurrencies()
         {
-            return Ok(_unitOfWork.Currencies.GetAll());
+            return Ok(_unitOfWork.Currencies.GetAll()
+                .Select(x => new
+                { 
+                    x.CurrencyId,
+                    x.Code,
+                    x.Name
+                }));
         }
 
         [HttpGet("{id}")]

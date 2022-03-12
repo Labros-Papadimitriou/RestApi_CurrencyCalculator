@@ -8,5 +8,6 @@ namespace RestApi_CurrencyCalculator.Core.IRepositories
 {
     public interface ICalculatorRepository : IRepository<Calculator>
     {
+        IEnumerable<object> GetAllCalculatorsWithCurrencies();
     }
 }

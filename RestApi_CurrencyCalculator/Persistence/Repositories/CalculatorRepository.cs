@@ -1,4 +1,5 @@
-﻿using RestApi_CurrencyCalculator.Core.IRepositories;
+﻿using Microsoft.EntityFrameworkCore;
+using RestApi_CurrencyCalculator.Core.IRepositories;
 using RestApi_CurrencyCalculator.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,21 @@ namespace RestApi_CurrencyCalculator.Persistence.Repositories
             : base(context)
         {
         }
+        public ApplicationDbContext ApplicationDbContext => Context as ApplicationDbContext;
 
-        public ApplicationDbContext MySchoolContext => Context as ApplicationDbContext;
+        public IEnumerable<object> GetAllCalculatorsWithCurrencies()
+        {
+            return ApplicationDbContext.Calculators
+                .Select(x => new
+                {
+                    x.CalculatorId,
+                    x.ExchangeRate,
+                    x.TimeStamp,
+                    x.BaseCurrencyId,
+                    x.TargetCurrencyId,
+                    BaseCurrency = x.BaseCurrency.Name,
+                    TargetCurrency = x.TargetCurrency.Name
+                }).ToList();
+        }
     }
 }

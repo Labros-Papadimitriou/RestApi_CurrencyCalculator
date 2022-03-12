@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RestApi_CurrencyCalculator.Core;
 using RestApi_CurrencyCalculator.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -11,10 +12,17 @@ namespace RestApi_CurrencyCalculator.Controllers
     [ApiController]
     public class CalculatorController : ControllerBase
     {
+        private readonly IUnitOfWork _unitOfwork;
+
+        public CalculatorController(IUnitOfWork unitOfWork)
+        {
+            _unitOfwork = unitOfWork;
+        }
+
         [HttpGet]
         public ActionResult<IEnumerable<Calculator>> GetAllCurrencies()
         {
-            return null;
+            return Ok(_unitOfwork.Calculators.GetAllCalculatorsWithCurrencies());
         }
 
         [HttpGet("{id}")]
