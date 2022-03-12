@@ -8,8 +8,8 @@ namespace RestApi_CurrencyCalculator.Core
 {
     public interface IUnitOfWork : IDisposable
     {
-        ICurrencyRepository Courses { get; }
-        ICalculatorRepository Trainers { get; }
+        ICurrencyRepository Currencies { get; }
+        ICalculatorRepository Calculators { get; }
         int Complete();
     }
 }

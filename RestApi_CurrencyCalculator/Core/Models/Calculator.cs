@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,8 +13,12 @@ namespace RestApi_CurrencyCalculator.Core.Models
             TimeStamp = DateTime.Now;
         }
 
-        public int CurrencyRateId { get; set; }
-        public decimal Rate { get; set; }
+        [Key]
+        public int CalculatorId { get; set; }
+
+        [Required]
+        public decimal ExchangeRate { get; set; }
+
         public DateTime TimeStamp { get; set; }
 
         //Foreign Keys
