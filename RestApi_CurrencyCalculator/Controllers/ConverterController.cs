@@ -23,6 +23,10 @@ namespace RestApi_CurrencyCalculator.Controllers
             string baseCurrency, string targetCurrency, decimal value)
         {
             var calculator = _unitOfWork.Calculators.FindCalculator(baseCurrency, targetCurrency);
+            if (calculator is null)
+            {
+                return BadRequest("Unfortunatelly, we couldnt make this convertion :(");
+            }
             var exchangeValue = calculator.GetEquivalence(value);
 
             return Ok(exchangeValue);
