@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RestApi_CurrencyCalculator.Controllers
 {
-    [Route("/api/[controller]")]
+    [Route("/api/currency")]
     [ApiController]
     public class CurrencyController : ControllerBase
     {
