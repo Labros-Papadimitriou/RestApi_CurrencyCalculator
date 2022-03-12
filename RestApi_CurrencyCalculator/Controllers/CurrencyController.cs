@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RestApi_CurrencyCalculator.Controllers
 {
-    [Route("/api/currency")]
+    [Route("api/currency")]
     [ApiController]
     public class CurrencyController : ControllerBase
     {
@@ -24,7 +24,7 @@ namespace RestApi_CurrencyCalculator.Controllers
         {
             return Ok(_unitOfWork.Currencies.GetAll()
                 .Select(x => new
-                { 
+                {
                     x.CurrencyId,
                     x.Code,
                     x.Name
@@ -34,7 +34,12 @@ namespace RestApi_CurrencyCalculator.Controllers
         [HttpGet("{id}")]
         public ActionResult<Currency> GetCurrencyById(int id)
         {
-            return null;
+            var currency = _unitOfWork.Currencies.Get(id);
+            if (currency is null)
+            {
+                return NotFound();
+            }
+            return Ok(currency);
         }
 
         

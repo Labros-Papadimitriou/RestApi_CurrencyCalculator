@@ -25,5 +25,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="AutoMapperConfig\Dtos\CalculatorDtos\" />
+  </ItemGroup>
+
 
 </Project>
