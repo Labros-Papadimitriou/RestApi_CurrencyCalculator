@@ -30,5 +30,24 @@ namespace RestApi_CurrencyCalculator.Persistence.Repositories
                     TargetCurrency = x.TargetCurrency.Name
                 }).ToList();
         }
+
+        public Calculator FindCalculator(string baseCurrCode, string targetCurrCode)
+        {
+            var baseCurrId = ApplicationDbContext.Currencies
+                .Where(x => x.Code == baseCurrCode)
+                .FirstOrDefault()
+                .CurrencyId;
+
+            var targetCurrId = ApplicationDbContext.Currencies
+                .Where(x => x.Code == targetCurrCode)
+                .FirstOrDefault()
+                .CurrencyId;
+
+            var calculator = ApplicationDbContext.Calculators
+                .Where(x => x.BaseCurrencyId == baseCurrId && x.TargetCurrencyId == targetCurrId)
+                .FirstOrDefault();
+
+            return calculator;
+        }
     }
 }

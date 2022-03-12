@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RestApi_CurrencyCalculator.Core.Models
 {
-    public class Calculator
+    public partial class Calculator
     {
         public Calculator()
         {

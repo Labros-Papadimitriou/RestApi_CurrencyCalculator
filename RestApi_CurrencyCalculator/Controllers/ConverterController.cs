@@ -20,9 +20,12 @@ namespace RestApi_CurrencyCalculator.Controllers
 
         [HttpGet]
         public IActionResult GetExchange(
-            string baseCurrency, string targetCurrency, int value)
+            string baseCurrency, string targetCurrency, decimal value)
         {
-            return null;
+            var calculator = _unitOfWork.Calculators.FindCalculator(baseCurrency, targetCurrency);
+            var exchangeValue = calculator.GetEquivalence(value);
+
+            return Ok(exchangeValue);
         }
     }
 }
