@@ -11,10 +11,5 @@ namespace RestApi_CurrencyCalculator.Core.Models
         {
             return (value * ExchangeRate);
         }
-
-        public decimal GetInverseEquivalence(decimal value)
-        {
-            return (value * ExchangeRate);
-        }
     }
 }
