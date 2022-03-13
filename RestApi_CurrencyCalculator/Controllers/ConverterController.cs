@@ -27,7 +27,7 @@ namespace RestApi_CurrencyCalculator.Controllers
             {
                 return BadRequest("Unfortunatelly, we couldnt make this convertion :(");
             }
-            var exchangeValue = calculator.GetEquivalence(value);
+            var exchangeValue = calculator.GetEquivalence(value).ToString("0.0000");
 
             return Ok(exchangeValue);
         }

@@ -7,9 +7,14 @@ namespace RestApi_CurrencyCalculator.Core.Models
 {
     public partial class Calculator
     {
-        public string GetEquivalence(decimal value)
+        public decimal GetEquivalence(decimal value)
         {
-            return (value * ExchangeRate).ToString("0.00");
+            return (value * ExchangeRate);
+        }
+
+        public decimal GetInverseEquivalence(decimal value)
+        {
+            return (value * ExchangeRate);
         }
     }
 }

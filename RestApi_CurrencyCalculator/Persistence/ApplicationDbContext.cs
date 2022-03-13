@@ -17,6 +17,7 @@ namespace RestApi_CurrencyCalculator.Persistence
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.RelateModels();
+            modelBuilder.Seed();
 
             base.OnModelCreating(modelBuilder);
         }

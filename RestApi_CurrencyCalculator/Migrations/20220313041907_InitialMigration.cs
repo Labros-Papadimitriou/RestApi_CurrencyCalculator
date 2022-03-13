@@ -13,8 +13,8 @@ namespace RestApi_CurrencyCalculator.Migrations
                 {
                     CurrencyId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Code = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true)
+                    Code = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,6 +45,32 @@ namespace RestApi_CurrencyCalculator.Migrations
                         column: x => x.TargetCurrencyId,
                         principalTable: "Currencies",
                         principalColumn: "CurrencyId");
+                });
+
+            migrationBuilder.InsertData(
+                table: "Currencies",
+                columns: new[] { "CurrencyId", "Code", "Name" },
+                values: new object[,]
+                {
+                    { 1, "EUR", "Euro" },
+                    { 2, "USD", "U.S. Dollar" },
+                    { 3, "GBP", "British Pound Sterling" },
+                    { 4, "CHF", "Swiss Franc" },
+                    { 5, "CAD", "Canadian Dollar" },
+                    { 6, "JPY", "Japanese Yen" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Calculators",
+                columns: new[] { "CalculatorId", "ExchangeRate", "TimeStamp", "BaseCurrencyId", "TargetCurrencyId" },
+                values: new object[,]
+                {
+                    { 1, 1.3764, "2022-02-05", 1, 2 },
+                    { 2, 1.2079, "2022-02-05", 1, 4 },
+                    { 3, 0.8731, "2022-02-05", 1, 3 },
+                    { 4, 76.7200, "2022-02-05", 2, 6 },
+                    { 5, 1.1379, "2022-02-05", 4, 2 },
+                    { 6, 1.5648, "2022-02-05", 3, 5 }
                 });
 
             migrationBuilder.CreateIndex(

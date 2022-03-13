@@ -10,7 +10,7 @@ using RestApi_CurrencyCalculator.Persistence;
 namespace RestApi_CurrencyCalculator.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220312144052_InitialMigration")]
+    [Migration("20220313041907_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,14 +57,55 @@ namespace RestApi_CurrencyCalculator.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.HasKey("CurrencyId");
 
                     b.ToTable("Currencies");
+
+                    b.HasData(
+                        new
+                        {
+                            CurrencyId = 1,
+                            Code = "EUR",
+                            Name = "Euro"
+                        },
+                        new
+                        {
+                            CurrencyId = 2,
+                            Code = "USD",
+                            Name = "U.S. Dollar"
+                        },
+                        new
+                        {
+                            CurrencyId = 3,
+                            Code = "GBP",
+                            Name = "British Pound Sterling"
+                        },
+                        new
+                        {
+                            CurrencyId = 4,
+                            Code = "CHF",
+                            Name = "Swiss Franc"
+                        },
+                        new
+                        {
+                            CurrencyId = 5,
+                            Code = "CAD",
+                            Name = "Canadian Dollar"
+                        },
+                        new
+                        {
+                            CurrencyId = 6,
+                            Code = "JPY",
+                            Name = "Japanese Yen"
+                        });
                 });
 
             modelBuilder.Entity("RestApi_CurrencyCalculator.Core.Models.Calculator", b =>

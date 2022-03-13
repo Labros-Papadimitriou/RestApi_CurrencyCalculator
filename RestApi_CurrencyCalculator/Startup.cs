@@ -45,7 +45,7 @@ namespace RestApi_CurrencyCalculator
             ConfigureSwagger(services);
         }
 
-        private static void ConfigureSwagger(IServiceCollection services)
+        private void ConfigureSwagger(IServiceCollection services)
         {
             services.AddSwaggerGen(x =>
             {
