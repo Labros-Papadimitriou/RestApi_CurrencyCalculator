@@ -22,14 +22,23 @@ namespace RestApi_CurrencyCalculator.Controllers
         public IActionResult GetExchange(
             string baseCurrencyCode, string targetCurrencyCode, decimal value)
         {
-            var calculator = _unitOfWork.Calculators.FindCalculator(baseCurrencyCode, targetCurrencyCode);
+            bool isStraightSide;
+
+            var calculator = _unitOfWork.Calculators.FindCalculator(baseCurrencyCode, targetCurrencyCode, out isStraightSide);
+
             if (calculator is null)
             {
                 return BadRequest("Unfortunatelly, we couldnt make this convertion :(");
             }
-            var exchangeValue = calculator.GetEquivalence(value).ToString("0.0000");
-
-            return Ok(exchangeValue);
+            
+            if (isStraightSide == true)
+            {
+                return Ok(calculator.GetEquivalence(value).ToString("0.0000"));
+            }
+            else
+            {
+                return Ok(calculator.GetInverseEquivalence(value).ToString("0.0000"));
+            }
         }
     }
 }

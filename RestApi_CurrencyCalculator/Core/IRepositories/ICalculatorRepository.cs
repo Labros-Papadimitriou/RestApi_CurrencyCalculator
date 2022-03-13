@@ -10,7 +10,7 @@ namespace RestApi_CurrencyCalculator.Core.IRepositories
     {
         object GetCalculatorByIdWithCurrencies(int id);
         IEnumerable<object> GetAllCalculatorsWithCurrencies();
-        Calculator FindCalculator(string baseCurrId, string targetCurrId);
+        Calculator FindCalculator(string baseCurrId, string targetCurrId, out bool isStraightSide);
 
     }
 }

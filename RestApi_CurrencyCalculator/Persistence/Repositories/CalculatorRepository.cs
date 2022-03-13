@@ -53,7 +53,7 @@ namespace RestApi_CurrencyCalculator.Persistence.Repositories
             return calculator;
         }
 
-        public Calculator FindCalculator(string baseCurrCode, string targetCurrCode)
+        public Calculator FindCalculator(string baseCurrCode, string targetCurrCode, out bool isStraightSide)
         {
             try
             {
@@ -70,13 +70,41 @@ namespace RestApi_CurrencyCalculator.Persistence.Repositories
                 var calculator = ApplicationDbContext.Calculators
                     .Where(x => x.BaseCurrencyId == baseCurrId && x.TargetCurrencyId == targetCurrId)
                     .OrderByDescending(x => x.TimeStamp)
-                    .FirstOrDefault();
+                    .First();
+
+                isStraightSide = true;
 
                 return calculator;
             }
             catch (Exception)
             {
-                return null;
+                try
+                {
+                    var baseCurrId = ApplicationDbContext.Currencies
+                                    .Where(x => x.Code == baseCurrCode)
+                                    .FirstOrDefault()
+                                    .CurrencyId;
+
+                    var targetCurrId = ApplicationDbContext.Currencies
+                        .Where(x => x.Code == targetCurrCode)
+                        .FirstOrDefault()
+                        .CurrencyId;
+
+                    var calculator = ApplicationDbContext.Calculators
+                        .Where(x => x.BaseCurrencyId == targetCurrId && x.TargetCurrencyId == baseCurrId)
+                        .OrderByDescending(x => x.TimeStamp)
+                        .First();
+
+                    isStraightSide = false;
+
+                    return calculator;
+                }
+                catch (Exception)
+                {
+                    isStraightSide = false;
+
+                    return null;
+                }
             }
         }
     }
