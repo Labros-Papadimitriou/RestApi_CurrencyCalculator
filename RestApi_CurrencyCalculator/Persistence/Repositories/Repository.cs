@@ -32,40 +32,28 @@ namespace RestApi_CurrencyCalculator.Persistence.Repositories
             return Context.Set<TEntity>().Where(predicate);
         }
 
-        public void ModifyEntity(TEntity entity)
-        {
-            Context.Entry(entity).State = EntityState.Modified;
-        }
-
         public TEntity SingleOrDefault(Expression<Func<TEntity, bool>> predicate)
         {
             return Context.Set<TEntity>().SingleOrDefault(predicate);
         }
-
-        public void Add(TEntity entity)
+        public void Modified(TEntity entity)
         {
+            Context.Entry(entity).State = EntityState.Modified;
+        }
+
+        public void Create(TEntity entity)
+        {
+            if (entity is null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
             Context.Entry(entity).State = EntityState.Added;
         }
 
-        public void AddRange(IEnumerable<TEntity> entities)
-        {
-            foreach (var entity in entities)
-            {
-                Context.Entry(entity).State = EntityState.Added;
-            }
-        }
-
-        public void Remove(TEntity entity)
+        public void Delete(TEntity entity)
         {
             Context.Entry(entity).State = EntityState.Deleted;
         }
 
-        public void RemoveRange(IEnumerable<TEntity> entities)
-        {
-            foreach (var entity in entities)
-            {
-                Context.Entry(entity).State = EntityState.Deleted;
-            }
-        }
     }
 }

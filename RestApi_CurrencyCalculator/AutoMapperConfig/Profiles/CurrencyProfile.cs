@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using RestApi_CurrencyCalculator.AutoMapper.Dtos.CurrencyDtos;
+using RestApi_CurrencyCalculator.AutoMapperConfig.Dtos.CurrencyDtos;
 using RestApi_CurrencyCalculator.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace RestApi_CurrencyCalculator.AutoMapperConfig.Profiles
         {
             //Sourse --> Target
             CreateMap<Currency, CurrencyReadDto>();
+            CreateMap<CurrencyCreateDto, Currency>();
         }
     }
 }

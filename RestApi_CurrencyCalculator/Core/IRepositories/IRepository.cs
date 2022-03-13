@@ -12,10 +12,8 @@ namespace RestApi_CurrencyCalculator.Core.IRepositories
         IEnumerable<TEntity> GetAll();
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
         TEntity SingleOrDefault(Expression<Func<TEntity, bool>> predicate);
-        void Add(TEntity entity);
-        void AddRange(IEnumerable<TEntity> entities);
-        void ModifyEntity(TEntity entity);
-        void Remove(TEntity entity);
-        void RemoveRange(IEnumerable<TEntity> entities);
+        void Create(TEntity entity);
+        void Modified(TEntity entity);
+        void Delete(TEntity entity);
     }
 }
