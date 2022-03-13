@@ -29,6 +29,6 @@ namespace RestApi_CurrencyCalculator.Core.Models
         //Navigation Properties
         public Currency BaseCurrency { get; set; }
         public Currency TargetCurrency { get; set; }
-        
+
     }
 }

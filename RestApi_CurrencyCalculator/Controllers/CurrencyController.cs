@@ -25,12 +25,14 @@ namespace RestApi_CurrencyCalculator.Controllers
             _mapper = mapper;
         }
 
+
         [HttpGet]
         public ActionResult<IEnumerable<CurrencyReadDto>> GetAllCurrencies()
         {
             var currencies = _unitOfWork.Currencies.GetAll();
             return Ok(_mapper.Map<IEnumerable<CurrencyReadDto>>(currencies));
         }
+
 
         [HttpGet("{id}", Name="GetCurrencyById")]
         public ActionResult<CurrencyReadDto> GetCurrencyById(int id)
@@ -42,6 +44,7 @@ namespace RestApi_CurrencyCalculator.Controllers
             }
             return NotFound();
         }
+
 
         [HttpPost]
         public ActionResult<CurrencyReadDto> CreateCurrency(CurrencyUpsertDto currencyUpsertDto)
@@ -57,6 +60,7 @@ namespace RestApi_CurrencyCalculator.Controllers
             var currencyReadDto = _mapper.Map<CurrencyReadDto>(currencyModel);
             return CreatedAtRoute(nameof(GetCurrencyById), new { Id = currencyReadDto.CurrencyId }, currencyReadDto);
         }
+
 
         [HttpPatch("{id}")]
         public ActionResult UpdateCurrency(int id, JsonPatchDocument<CurrencyUpsertDto> patchDoc)
@@ -81,6 +85,7 @@ namespace RestApi_CurrencyCalculator.Controllers
 
             return NoContent();
         }
+
 
         [HttpDelete("{id}")]
         public ActionResult DeleteCurrency(int id)

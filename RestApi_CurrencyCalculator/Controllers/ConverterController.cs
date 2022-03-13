@@ -20,9 +20,9 @@ namespace RestApi_CurrencyCalculator.Controllers
 
         [HttpGet]
         public IActionResult GetExchange(
-            string baseCurrency, string targetCurrency, decimal value)
+            string baseCurrencyCode, string targetCurrencyCode, decimal value)
         {
-            var calculator = _unitOfWork.Calculators.FindCalculator(baseCurrency, targetCurrency);
+            var calculator = _unitOfWork.Calculators.FindCalculator(baseCurrencyCode, targetCurrencyCode);
             if (calculator is null)
             {
                 return BadRequest("Unfortunatelly, we couldnt make this convertion :(");
