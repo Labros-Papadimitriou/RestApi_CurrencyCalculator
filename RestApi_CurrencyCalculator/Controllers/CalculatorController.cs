@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using RestApi_CurrencyCalculator.AutoMapperConfig.Dtos.CalculatorDtos;
+using RestApi_CurrencyCalculator.Controllers.HelperClasses;
 using RestApi_CurrencyCalculator.Core;
 using RestApi_CurrencyCalculator.Core.Models;
 using System;
@@ -49,39 +50,9 @@ namespace RestApi_CurrencyCalculator.Controllers
             {
                 return BadRequest();
             }
-            int baseCurrId = 0;
-            int targetCurrId = 0;
 
-            var baseCurrencyItem = _unitOfwork.Currencies
-                .Find(x => x.Name == calculatorCreateDto.BaseCurrencyName && x.Code == calculatorCreateDto.BaseCurrencyCode)
-                .FirstOrDefault();
-            if (baseCurrencyItem is null)
-            {
-                Currency baseCurrNew = new Currency() { Code = calculatorCreateDto.BaseCurrencyCode, Name = calculatorCreateDto.BaseCurrencyName };
-                _unitOfwork.Currencies.Create(baseCurrNew);
-                _unitOfwork.Complete();
-                baseCurrId = _unitOfwork.Currencies.Find(x => x.Name == calculatorCreateDto.BaseCurrencyName).FirstOrDefault().CurrencyId;
-            }
-            else
-            {
-                baseCurrId = baseCurrencyItem.CurrencyId;
-            }
-
-
-            var targetCurrencyItem = _unitOfwork.Currencies
-                .Find(x => x.Name == calculatorCreateDto.TargetCurrencyName && x.Code == calculatorCreateDto.TargetCurrencyCode)
-                .FirstOrDefault();
-            if (targetCurrencyItem is null)
-            {
-                Currency targetCurrNew = new Currency() { Code = calculatorCreateDto.TargetCurrencyCode, Name = calculatorCreateDto.TargetCurrencyName };
-                _unitOfwork.Currencies.Create(targetCurrNew);
-                _unitOfwork.Complete();
-                targetCurrId = _unitOfwork.Currencies.Find(x => x.Name == calculatorCreateDto.TargetCurrencyName).FirstOrDefault().CurrencyId;
-            }
-            else
-            {
-                targetCurrId = targetCurrencyItem.CurrencyId;
-            }
+            int baseCurrId = calculatorCreateDto.BaseCurrCreateIfNotExists(_unitOfwork);
+            int targetCurrId = calculatorCreateDto.TargetCurrCreateIfNotExists(_unitOfwork);
 
             Calculator calculatorModel = new Calculator() { ExchangeRate = calculatorCreateDto.ExchangeRate, BaseCurrencyId = baseCurrId, TargetCurrencyId = targetCurrId };
             _unitOfwork.Calculators.Create(calculatorModel);
