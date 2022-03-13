@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using RestApi_CurrencyCalculator.AutoMapperConfig.Dtos.CalculatorDtos;
+using RestApi_CurrencyCalculator.AutoMapperConfig.Dtos.CurrencyDtos;
 using RestApi_CurrencyCalculator.Controllers.HelperClasses;
 using RestApi_CurrencyCalculator.Core;
 using RestApi_CurrencyCalculator.Core.Models;
@@ -62,29 +64,27 @@ namespace RestApi_CurrencyCalculator.Controllers
         }
 
 
-        //[HttpPatch("{id}")]
-        //public ActionResult UpdateCurrency(int id, JsonPatchDocument<CurrencyUpsertDto> patchDoc)
-        //{
-        //    var currencyModelFromRepo = _unitOfWork.Currencies.Get(id);
-        //    if (currencyModelFromRepo is null)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpPatch("{id}")]
+        public ActionResult UpdateCalculator(int id, JsonPatchDocument<Calculator> patchDoc)
+        {
+            var calculatorModelFromRepo = _unitOfwork.Calculators.Get(id);
+            if (calculatorModelFromRepo is null)
+            {
+                return NotFound();
+            }
+            
+            patchDoc.ApplyTo(calculatorModelFromRepo, ModelState);
 
-        //    var currencyToPatch = _mapper.Map<CurrencyUpsertDto>(currencyModelFromRepo);
-        //    patchDoc.ApplyTo(currencyToPatch, ModelState);
+            if (!TryValidateModel(calculatorModelFromRepo))
+            {
+                return ValidationProblem(ModelState);
+            }
 
-        //    if (!TryValidateModel(currencyToPatch))
-        //    {
-        //        return ValidationProblem(ModelState);
-        //    }
+            _unitOfwork.Calculators.Modified(calculatorModelFromRepo);
+            _unitOfwork.Complete();
 
-        //    _mapper.Map(currencyToPatch, currencyModelFromRepo);
-        //    _unitOfWork.Currencies.Modified(currencyModelFromRepo);
-        //    _unitOfWork.Complete();
-
-        //    return NoContent();
-        //}
+            return NoContent();
+        }
 
 
         [HttpDelete("{id}")]
