@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using RestApi_CurrencyCalculator.AutoMapper.Dtos.CurrencyDtos;
 using RestApi_CurrencyCalculator.AutoMapperConfig.Dtos.CurrencyDtos;
@@ -43,19 +44,56 @@ namespace RestApi_CurrencyCalculator.Controllers
         }
 
         [HttpPost]
-        public ActionResult<CurrencyReadDto> CreateCurrency(CurrencyCreateDto currencyCreateDto)
+        public ActionResult<CurrencyReadDto> CreateCurrency(CurrencyUpsertDto currencyUpsertDto)
         {
-            if (currencyCreateDto is null)
+            if (currencyUpsertDto is null)
             {
                 return BadRequest();
             }
-            var currencyModel = _mapper.Map<Currency>(currencyCreateDto);
+            var currencyModel = _mapper.Map<Currency>(currencyUpsertDto);
             _unitOfWork.Currencies.Create(currencyModel);
             _unitOfWork.Complete();
 
             var currencyReadDto = _mapper.Map<CurrencyReadDto>(currencyModel);
-
             return CreatedAtRoute(nameof(GetCurrencyById), new { Id = currencyReadDto.CurrencyId }, currencyReadDto);
         }
+
+        [HttpPatch("{id}")]
+        public ActionResult UpdateCurrency(int id, JsonPatchDocument<CurrencyUpsertDto> patchDoc)
+        {
+            var currencyModelFromRepo = _unitOfWork.Currencies.Get(id);
+            if (currencyModelFromRepo is null)
+            {
+                return NotFound();
+            }
+
+            var currencyToPatch = _mapper.Map<CurrencyUpsertDto>(currencyModelFromRepo);
+            patchDoc.ApplyTo(currencyToPatch, ModelState);
+
+            if (!TryValidateModel(currencyToPatch))
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            _mapper.Map(currencyToPatch, currencyModelFromRepo);
+            _unitOfWork.Currencies.Modified(currencyModelFromRepo);
+            _unitOfWork.Complete();
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult DeleteCurrency(int id)
+        {
+            var currencyModelFromRepo = _unitOfWork.Currencies.Get(id);
+            if (currencyModelFromRepo is null)
+            {
+                return NotFound();
+            }
+            _unitOfWork.Currencies.Delete(currencyModelFromRepo);
+            _unitOfWork.Complete();
+
+            return NoContent();
+        } 
     }
 }

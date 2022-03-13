@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RestApi_CurrencyCalculator.AutoMapperConfig.Dtos.CurrencyDtos
 {
-    public class CurrencyCreateDto
+    public class CurrencyUpsertDto
     {
         [Required]
         public string Code { get; set; }

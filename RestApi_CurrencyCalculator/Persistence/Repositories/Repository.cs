@@ -52,8 +52,11 @@ namespace RestApi_CurrencyCalculator.Persistence.Repositories
 
         public void Delete(TEntity entity)
         {
+            if (entity is null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
             Context.Entry(entity).State = EntityState.Deleted;
         }
-
     }
 }
