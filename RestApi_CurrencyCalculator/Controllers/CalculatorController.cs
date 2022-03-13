@@ -87,18 +87,18 @@ namespace RestApi_CurrencyCalculator.Controllers
         //}
 
 
-        //[HttpDelete("{id}")]
-        //public ActionResult DeleteCalculator(int id)
-        //{
-        //    var currencyModelFromRepo = _unitOfWork.Currencies.Get(id);
-        //    if (currencyModelFromRepo is null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    _unitOfWork.Currencies.Delete(currencyModelFromRepo);
-        //    _unitOfWork.Complete();
+        [HttpDelete("{id}")]
+        public ActionResult DeleteCalculator(int id)
+        {
+            var calculatorModelFromRepo = _unitOfwork.Calculators.Get(id);
+            if (calculatorModelFromRepo is null)
+            {
+                return NotFound();
+            }
+            _unitOfwork.Calculators.Delete(calculatorModelFromRepo);
+            _unitOfwork.Complete();
 
-        //    return NoContent();
-        //}
+            return NoContent();
+        }
     }
 }
