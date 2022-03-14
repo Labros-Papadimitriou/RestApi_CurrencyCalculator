@@ -32,10 +32,6 @@ namespace RestApi_CurrencyCalculator.Persistence.Repositories
             return Context.Set<TEntity>().Where(predicate);
         }
 
-        public TEntity SingleOrDefault(Expression<Func<TEntity, bool>> predicate)
-        {
-            return Context.Set<TEntity>().SingleOrDefault(predicate);
-        }
         public void Modified(TEntity entity)
         {
             Context.Entry(entity).State = EntityState.Modified;
