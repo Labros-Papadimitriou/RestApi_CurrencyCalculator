@@ -16,6 +16,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Serialization;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace RestApi_CurrencyCalculator
 {
@@ -30,26 +34,83 @@ namespace RestApi_CurrencyCalculator
 
         public void ConfigureServices(IServiceCollection services)
         {
+            //Entity Framework
             services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer
                 (Configuration.GetConnectionString("ConverterConnection")));
 
+            //Identity
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+            //Authentication
+            services.AddAuthentication(option =>
+            {
+                option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            //JWT Bearer
+            .AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = Configuration["JWT:ValidAudience"],
+                    ValidIssuer = Configuration["JWT:ValidIssuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:SecretKey"]))
+                };
+            });
+
+            //Controllers and NewtonsoftJson
             services.AddControllers().AddNewtonsoftJson(s =>
             {
                 s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             });
 
+            //Automapper
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            //Unit of Work Register
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            //Swagger
             ConfigureSwagger(services);
-        }
 
+        }
         private void ConfigureSwagger(IServiceCollection services)
         {
-            services.AddSwaggerGen(x =>
+            services.AddSwaggerGen(swagger =>
             {
-                x.SwaggerDoc("v1", new OpenApiInfo { Title = "Currency Calculator Api", Version = "v1" });
+                swagger.SwaggerDoc("v1", new OpenApiInfo { Title = "Currency Calculator Api", Version = "v1" });
+
+                //Configure Authnetication On Swagger
+                swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Enter Bearer [space] and then your valid token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\""
+                });
+                swagger.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                        Reference = new OpenApiReference
+                            {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                            },
+                        },
+                        new string[] {}
+                        }
+                    });
             });
         }
 
@@ -70,6 +131,7 @@ namespace RestApi_CurrencyCalculator
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

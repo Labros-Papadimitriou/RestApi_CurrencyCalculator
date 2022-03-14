@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using RestApi_CurrencyCalculator.AuthenticationViewModels;
 using RestApi_CurrencyCalculator.AutoMapperConfig.Dtos.CalculatorDtos;
 using RestApi_CurrencyCalculator.AutoMapperConfig.Dtos.CurrencyDtos;
 using RestApi_CurrencyCalculator.Controllers.HelperClasses;
@@ -13,6 +15,8 @@ using System.Threading.Tasks;
 
 namespace RestApi_CurrencyCalculator.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
+    [Authorize]
     [Route("/api/[controller]")]
     [ApiController]
     public class CalculatorController : ControllerBase
