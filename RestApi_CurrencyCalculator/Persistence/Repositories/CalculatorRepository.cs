@@ -44,7 +44,7 @@ namespace RestApi_CurrencyCalculator.Persistence.Repositories
                     TargetCurrency = x.TargetCurrency.Name
                 }
                 ).FirstOrDefault();
-            
+
             if (calculator == null)
             {
                 return new { message = "No Calculator found with this Id" };
@@ -55,48 +55,29 @@ namespace RestApi_CurrencyCalculator.Persistence.Repositories
 
         public Calculator FindCalculator(string baseCurrCode, string targetCurrCode, out bool isStraightSide)
         {
-            int baseCurrId = 0; 
-            int targetCurrId = 0;
             Calculator calculator;
+            var baseCurr = ApplicationDbContext.Currencies.Where(x => x.Code == baseCurrCode).FirstOrDefault();
+            var targetCurr = ApplicationDbContext.Currencies.Where(x => x.Code == targetCurrCode).FirstOrDefault();
 
-            try
+            if (baseCurr == null) throw new NullReferenceException($"Unfortunatelly we could convert {baseCurr.Name}");
+            if (targetCurr == null) throw new NullReferenceException($"Unfortunatelly we could convert {targetCurr.Name}");
+
+            calculator = ApplicationDbContext.Calculators
+                .Where(x => x.BaseCurrencyId == baseCurr.CurrencyId && x.TargetCurrencyId == targetCurr.CurrencyId)
+                .OrderByDescending(x => x.TimeStamp)
+                .FirstOrDefault();
+
+            if (calculator != null)
             {
-                baseCurrId = ApplicationDbContext.Currencies
-                        .Where(x => x.Code == baseCurrCode)
-                        .FirstOrDefault()
-                        .CurrencyId;
-
-                targetCurrId = ApplicationDbContext.Currencies
-                   .Where(x => x.Code == targetCurrCode)
-                   .FirstOrDefault()
-                   .CurrencyId;
-
-                calculator = ApplicationDbContext.Calculators
-                    .Where(x => x.BaseCurrencyId == baseCurrId && x.TargetCurrencyId == targetCurrId)
-                    .OrderByDescending(x => x.TimeStamp)
-                    .First();
-
                 isStraightSide = true;
                 return calculator;
             }
-            catch (Exception)
-            {
-                try
-                {
-                     calculator = ApplicationDbContext.Calculators
-                        .Where(x => x.BaseCurrencyId == targetCurrId && x.TargetCurrencyId == baseCurrId)
-                        .OrderByDescending(x => x.TimeStamp)
-                        .First();
 
-                    isStraightSide = false;
-                    return calculator;
-                }
-                catch (Exception)
-                {
-                    isStraightSide = false;
-                    return null;
-                }
-            }
+            isStraightSide = false;
+            return ApplicationDbContext.Calculators
+                .Where(x => x.BaseCurrencyId == targetCurr.CurrencyId && x.TargetCurrencyId == baseCurr.CurrencyId)
+                .OrderByDescending(x => x.TimeStamp)
+                .FirstOrDefault();
         }
     }
 }

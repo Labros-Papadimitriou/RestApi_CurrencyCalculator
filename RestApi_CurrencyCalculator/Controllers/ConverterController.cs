@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RestApi_CurrencyCalculator.Core;
+using RestApi_CurrencyCalculator.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,23 +23,21 @@ namespace RestApi_CurrencyCalculator.Controllers
         public IActionResult GetExchange(
             string baseCurrencyCode, string targetCurrencyCode, decimal value)
         {
+            Calculator calculator;
             bool isStraightSide;
-
-            var calculator = _unitOfWork.Calculators.FindCalculator(baseCurrencyCode, targetCurrencyCode, out isStraightSide);
-
-            if (calculator is null)
+            try
             {
-                return BadRequest("Unfortunatelly, we couldnt make this convertion :(");
+                calculator = _unitOfWork.Calculators.FindCalculator(baseCurrencyCode, targetCurrencyCode, out isStraightSide);
             }
-            
-            if (isStraightSide == true)
+            catch (NullReferenceException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            if (isStraightSide)
             {
                 return Ok(calculator.GetEquivalence(value).ToString("0.0000"));
             }
-            else
-            {
-                return Ok(calculator.GetInverseEquivalence(value).ToString("0.0000"));
-            }
+            return Ok(calculator.GetInverseEquivalence(value).ToString("0.0000"));
         }
     }
 }
