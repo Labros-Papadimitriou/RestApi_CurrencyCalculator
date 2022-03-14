@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RestApi_CurrencyCalculator.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RestApi_CurrencyCalculator.Core
 {
@@ -23,7 +19,7 @@ namespace RestApi_CurrencyCalculator.Core
                         .WithMany(t => t.TargetCurrencies)
                         .HasForeignKey(m => m.TargetCurrencyId)
                         .OnDelete(DeleteBehavior.ClientNoAction);
-
+            
             modelBuilder.Entity<Calculator>()
                     .Property("ExchangeRate")
                     .HasColumnType("decimal(18, 4)"); 

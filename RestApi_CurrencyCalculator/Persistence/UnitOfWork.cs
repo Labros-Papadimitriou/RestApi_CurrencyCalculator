@@ -1,10 +1,6 @@
 ﻿using RestApi_CurrencyCalculator.Core;
 using RestApi_CurrencyCalculator.Core.IRepositories;
 using RestApi_CurrencyCalculator.Persistence.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RestApi_CurrencyCalculator.Persistence
 {

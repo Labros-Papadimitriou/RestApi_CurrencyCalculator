@@ -1,6 +1,4 @@
-﻿using RestApi_CurrencyCalculator.Core.Models;
-using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace RestApi_CurrencyCalculator.AutoMapperConfig.Dtos.CalculatorDtos
 {
