@@ -15,13 +15,5 @@ namespace RestApi_CurrencyCalculator.Persistence.Repositories
         }
         public ApplicationDbContext ApplicationDbContext => Context as ApplicationDbContext;
 
-        //public Currency FindCurrency(string currencyCode)
-        //{
-        //    var currency = ApplicationDbContext.Currencies
-        //        .Where(x => x.Code == currencyCode)
-        //        .FirstOrDefault();
-
-        //    return currency;
-        //}
     }
 }
