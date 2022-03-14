@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RestApi_CurrencyCalculator.Core.Models;
 
-namespace RestApi_CurrencyCalculator.Core
+namespace RestApi_CurrencyCalculator.Persistence
 {
     public static class ModelBuilderExtensions
     {

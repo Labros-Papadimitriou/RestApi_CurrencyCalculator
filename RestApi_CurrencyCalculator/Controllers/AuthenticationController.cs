@@ -2,10 +2,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using RestApi_CurrencyCalculator.AuthenticationViewModels;
-using RestApi_CurrencyCalculator.Persistence;
+using RestApi_CurrencyCalculator.Core;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -41,7 +40,7 @@ namespace RestApi_CurrencyCalculator.Controllers
                 var authClaims = new List<Claim>()
                 {
                     new Claim(ClaimTypes.Name, model.UserName),
-                    new Claim(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
+                    new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
                 };
                 foreach (var userRole in userRoles)
                 {
