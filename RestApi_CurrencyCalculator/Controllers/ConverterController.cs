@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RestApi_CurrencyCalculator.Core;
+using RestApi_CurrencyCalculator.Core.ConvertionStrategy;
 using RestApi_CurrencyCalculator.Core.Models;
 using System;
 
@@ -32,9 +33,11 @@ namespace RestApi_CurrencyCalculator.Controllers
             }
             if (isStraightSide)
             {
-                return Ok(calculator.GetEquivalence(value).ToString("0.0000"));
+                calculator.SetConvertionType(new NormalConversion());
+                return Ok(calculator.Convert(value).ToString("0.0000"));
             }
-            return Ok(calculator.GetInverseEquivalence(value).ToString("0.0000"));
+            calculator.SetConvertionType(new InverseConvertion());
+            return Ok(calculator.Convert(value).ToString("0.0000"));
         }
     }
 }

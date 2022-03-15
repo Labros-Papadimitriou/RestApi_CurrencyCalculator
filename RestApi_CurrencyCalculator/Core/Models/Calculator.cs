@@ -1,10 +1,12 @@
-﻿using System;
+﻿using RestApi_CurrencyCalculator.Core.ConvertionStrategy;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace RestApi_CurrencyCalculator.Core.Models
 {
     public partial class Calculator
     {
+        private IConvertionType _convertionType;
         public Calculator()
         {
             TimeStamp = DateTime.Now;

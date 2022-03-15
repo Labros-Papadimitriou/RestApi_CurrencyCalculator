@@ -1,14 +1,16 @@
-﻿namespace RestApi_CurrencyCalculator.Core.Models
+﻿using RestApi_CurrencyCalculator.Core.ConvertionStrategy;
+
+namespace RestApi_CurrencyCalculator.Core.Models
 {
     public partial class Calculator
     {
-        public decimal GetEquivalence(decimal value)
+        public void SetConvertionType(IConvertionType convertionType)
         {
-            return value * ExchangeRate;
+            _convertionType = convertionType;
         }
-        public decimal GetInverseEquivalence(decimal value)
+        public decimal Convert(decimal value)
         {
-            return value / ExchangeRate;
+            return _convertionType.ConvertCurrency(value, ExchangeRate);
         }
     }
 }
