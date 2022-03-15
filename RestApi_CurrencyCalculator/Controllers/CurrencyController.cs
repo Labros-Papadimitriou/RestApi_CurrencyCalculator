@@ -100,6 +100,7 @@ namespace RestApi_CurrencyCalculator.Controllers
                 .Where(x=>x.BaseCurrencyId == currencyModelFromRepo.CurrencyId
                             || x.TargetCurrencyId == currencyModelFromRepo.CurrencyId)
                 .ToList();
+
             foreach (var calculator in calculatorsFromRepo)
             {
                 _unitOfWork.Calculators.Delete(calculator);
