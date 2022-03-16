@@ -46,7 +46,6 @@ namespace RestApi_CurrencyCalculator.Controllers
             return NotFound();
         }
 
-
         [HttpPost]
         public ActionResult<CurrencyReadDto> CreateCurrency(CurrencyUpsertDto currencyUpsertDto)
         {

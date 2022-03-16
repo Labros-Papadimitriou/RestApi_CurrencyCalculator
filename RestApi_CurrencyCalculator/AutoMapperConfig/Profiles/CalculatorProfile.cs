@@ -11,7 +11,6 @@ namespace RestApi_CurrencyCalculator.AutoMapperConfig.Profiles
             //Sourse --> Target
             CreateMap<Calculator, CalculatorReadDto>();
             CreateMap<CalculatorCreateDto, Calculator>();
-
         }
     }
 }
