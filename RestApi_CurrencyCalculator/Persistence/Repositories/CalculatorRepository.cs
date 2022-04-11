@@ -57,8 +57,8 @@ namespace RestApi_CurrencyCalculator.Persistence.Repositories
             var baseCurr = ApplicationDbContext.Currencies.Where(x => x.Code == baseCurrCode).FirstOrDefault();
             var targetCurr = ApplicationDbContext.Currencies.Where(x => x.Code == targetCurrCode).FirstOrDefault();
 
-            if (baseCurr == null) throw new NullReferenceException($"Unfortunatelly we could convert {baseCurr.Name}");
-            if (targetCurr == null) throw new NullReferenceException($"Unfortunatelly we could convert {targetCurr.Name}");
+            if (baseCurr == null) throw new NullReferenceException($"Unfortunatelly we could not convert {baseCurr.Name}");
+            if (targetCurr == null) throw new NullReferenceException($"Unfortunatelly we could not convert {targetCurr.Name}");
 
             calculator = ApplicationDbContext.Calculators
                 .Where(x => x.BaseCurrencyId == baseCurr.CurrencyId && x.TargetCurrencyId == targetCurr.CurrencyId)

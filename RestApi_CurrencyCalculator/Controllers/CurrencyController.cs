@@ -11,7 +11,6 @@ using System.Linq;
 
 namespace RestApi_CurrencyCalculator.Controllers
 {
-
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
